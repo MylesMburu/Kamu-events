@@ -4,5 +4,14 @@
 {% block content  %}
 
 <h1>Home page</h1>
+<div>
+
+    <!-- a python for loop to show each event in the list -->
+    {% for event in events %}
+    <div>
+        <h5> {{event.id}} -- <a href="{% url 'event' event.id %}"> {{event.name}}</a></h5>
+    </div>
+    {% endfor %}
+</div>
 
 {%  endblock %}

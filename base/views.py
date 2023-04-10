@@ -1,9 +1,18 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Event
+
+events = [
+    {'id': 1 , 'name':'Data science I4G'},
+    {'id': 1 , 'name':'Cyber Security I4G'},
+
+]
 
 # Create your views here.
 def home(request):
-    return render(request, 'base/home.html')
+    context = {'events': events}
+    # events = Event.objects.all()
+    return render(request, 'base/home.html',context)
 
-def body(request):
-    return render(request,'base/body.html')
+def event(request):
+    return render(request,'base/event.html')
