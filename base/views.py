@@ -20,3 +20,7 @@ def event(request, pk):
     context = {'event': event}   
 
     return render(request,'base/event.html', context)
+
+def createEvent(request):
+    context = {}
+    return render (request,'base/event_form.html', context)
