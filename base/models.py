@@ -20,6 +20,10 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:   
+        ordering = ['-updated', '-created']
+        #This orders the events such that the latest event is at the top. Is achieved by placing the - before the updated/created
 
 class Message(models.Model):    #A child model of the Event model
     # user =

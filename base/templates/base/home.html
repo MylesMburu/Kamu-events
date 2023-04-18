@@ -10,6 +10,9 @@
     <!-- a python for loop to show each event in the list -->
     {% for event in events %}
     <div>
+        <a href="{% url 'update-event' event.id%}">Edit</a>
+        <a href="{% url 'delete-event' event.id %}">Delete</a>
+
         <h6>@{{event.host.username}}</h6>
         <h5> {{event.id}} -- <a href="{% url 'event' event.id %}"> {{event.name}}</a></h5>
         <small>{{event.topic.name}}</small>
