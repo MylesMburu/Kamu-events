@@ -4,8 +4,15 @@
 {% block content  %}
 
 <h1>Home page</h1>
-<div>
-    <a href="{% url 'create-event' %}">Create event</a>
+<div class="home-container">
+
+    <div>
+
+    </div>
+
+    <div>
+
+        <a href="{% url 'create-event' %}">Create event</a>
 
     <!-- a python for loop to show each event in the list -->
     {% for event in events %}
@@ -17,6 +24,9 @@
         <h5> {{event.id}} -- <a href="{% url 'event' event.id %}"> {{event.name}}</a></h5>
         <small>{{event.topic.name}}</small>
         <hr>
+
+    </div>
+    
     </div>
     {% endfor %}
 </div>
