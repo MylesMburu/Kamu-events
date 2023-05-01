@@ -18,7 +18,8 @@ def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else '' #variable to query
     events = Event.objects.filter(Q(topic__name__icontains=q) | Q(name__icontains=q) | Q(host__username__icontains=q)) #Filters the events according to the topic name
 
-    context = {'events': events, 'topics':topics}
+    event_count = events.count()
+    context = {'events': events, 'topics':topics, 'event_count':event_count}
     # events = Event.objects.all()
     return render(request, 'base/home.html',context)
 
