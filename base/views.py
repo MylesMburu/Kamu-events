@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
+from django.contrib import messages
+from django.contrib.auth.models import User
 from django.db.models import Q
+from django.contrib.auth import authenticate, login, logout
 from .models import Event, Topic
 from .forms import EventForm
 
@@ -11,6 +13,29 @@ from .forms import EventForm
 # ]
 
 # Create your views here.
+
+def loginPage(request):
+
+    if request.method =='POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.get(username=username) # checks whether the username entered in theform exists in the database
+        except:
+            if password is '':
+                messages.error(request, 'Password cannot be blank')
+    
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')  
+        else:
+            messages.error(request, 'Wrong username or password!')
+    context = {}
+    return render(request, 'base/login_register.html', context)
+
 def home(request):
     events = Event.objects.all()
     topics = Topic.objects.all()
