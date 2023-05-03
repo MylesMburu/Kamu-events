@@ -17,7 +17,9 @@ from .forms import EventForm
 # Create your views here.
 
 def loginPage(request):
-
+    if request.user.is_authenticated:   # stops a logged in user from logging in again
+        return redirect('home')
+    
     if request.method =='POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -65,6 +67,8 @@ def createEvent(request):
     if request.method == 'POST':  #getting the POST request from the form
         form = EventForm(request.POST)
         if form.is_valid:
+            event = form.save(commit=False)  # Don't save the form to the database yet
+            event.host = request.user  # Set the host to the current user
             form.save()     #saves the data from the form in the database
             return redirect('home')
     form = EventForm()
