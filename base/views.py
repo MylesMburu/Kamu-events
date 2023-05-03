@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Event, Topic
 from .forms import EventForm
@@ -17,11 +18,12 @@ from .forms import EventForm
 # Create your views here.
 
 def loginPage(request):
+    page = 'login'
     if request.user.is_authenticated:   # stops a logged in user from logging in again
         return redirect('home')
     
     if request.method =='POST':
-        username = request.POST.get('username')
+        username = request.POST.get('username').lower()
         password = request.POST.get('password')
 
         try:
@@ -37,12 +39,27 @@ def loginPage(request):
             return redirect('home')  
         else:
             messages.error(request, 'Wrong username or password!')
-    context = {}
+    context = {'page':page}
     return render(request, 'base/login_register.html', context)
 
 def logoutUser(request):
     logout(request)
     return redirect('home')
+
+def registerUser(request):
+    form = UserCreationForm()
+
+    if request.method == 'post':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect('login')
+        else:
+            messages.error(request, 'There seems to be an error in the registration process')
+    return render(request, 'base/login_register.html', {'form':form})
 
 def home(request):
     events = Event.objects.all()
