@@ -49,13 +49,12 @@ def logoutUser(request):
 def registerUser(request):
     form = UserCreationForm()
 
-    if request.method == 'post':
+    if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
-            login(request, user)
             return redirect('login')
         else:
             messages.error(request, 'There seems to be an error in the registration process')
