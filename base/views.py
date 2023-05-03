@@ -1,8 +1,10 @@
 from django.shortcuts import render,redirect
+from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from .models import Event, Topic
 from .forms import EventForm
 
@@ -23,7 +25,7 @@ def loginPage(request):
         try:
             user = User.objects.get(username=username) # checks whether the username entered in theform exists in the database
         except:
-            if password is '':
+            if password == '':
                 messages.error(request, 'Password cannot be blank')
     
         user = authenticate(request, username=username, password=password)
@@ -35,6 +37,10 @@ def loginPage(request):
             messages.error(request, 'Wrong username or password!')
     context = {}
     return render(request, 'base/login_register.html', context)
+
+def logoutUser(request):
+    logout(request)
+    return redirect('home')
 
 def home(request):
     events = Event.objects.all()
@@ -54,6 +60,7 @@ def event(request, pk):
 
     return render(request,'base/event.html', context)
 
+@login_required(login_url='login')
 def createEvent(request):
     if request.method == 'POST':  #getting the POST request from the form
         form = EventForm(request.POST)
@@ -64,10 +71,14 @@ def createEvent(request):
     context = {'form': form}
     return render (request,'base/event_form.html', context)
 
+@login_required(login_url='login')
 def updateEvent(request, pk):
     event = Event.objects.get(id=pk)
     form = EventForm(instance=event)
 
+    if request.user != event.host:  # prevents a user from editing an event that is not theirs
+        return HttpResponse('This is not your event!')
+    
     if request.method == 'POST':
         form = EventForm(request.POST, instance=event)
         if form.is_valid:
@@ -77,9 +88,13 @@ def updateEvent(request, pk):
     context = {'form':form}
     return render(request, 'base/event_form.html', context)
 
+@login_required(login_url='login')
 def deleteEvent(request, pk):
     event = Event.objects.get(id=pk)
 
+    if request.user != event.host:  #prevents a user from deleting an event that is not theirs
+        return HttpResponse('This is not your event!')
+    
     if request.method == 'POST':
         event.delete()
         return redirect('home')
