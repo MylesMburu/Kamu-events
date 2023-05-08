@@ -4,5 +4,6 @@ from .models import Event
 class EventForm(ModelForm):
     class Meta:
         model = Event
-        fields = 'topic','name','description'
+        fields = '__all__'
+        exclude = ['host']
         
