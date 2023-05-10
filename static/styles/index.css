@@ -1,6 +1,32 @@
 body{
-    background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
+    /* background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%); */
+    background-color: #e3eeff;
+    font-family: Arial, Helvetica, sans-serif;
 }
 h1{
-    color: red;
+    color: blue;
+}
+
+.badge{
+    display: inline-block;
+  padding: 0.25em 0.5em;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 0.8em;
+  border-radius: 0.25em;
+}
+.categories{
+    background-color: grey;
+    color: white;
+    padding: 2rem;
+    margin: 0 1rem;
+    border-radius: 0.5rem;
+    height: max-content;
+}
+
+.category-link{
+    color: white;
+}
+.category-link.active{
+    color:#8bbcf1 ;
 }

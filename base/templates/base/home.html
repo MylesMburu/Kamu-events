@@ -12,19 +12,19 @@
 <h1>Home page</h1>
 <div class="home-container">
 
-    <div>
-        Categories
+    <div class="categories">
+        <h3>Categories</h3>
         <hr>
 
         <div>
-            <a href="{% url 'home'%}">All</a>
-        </div>
-        {% for topic in topics%}
+            <a href="{% url 'home'%}" class="category-link{% if not request.GET.q %} active{% endif %}">All</a>
+          </div>
+          {% for topic in topics%}
             <div>
-                <a href="{% url 'home'%}?q={{topic.name}}" >{{topic.name}}</a>
+                  <a href="{% url 'home'%}?q={{topic.name}}" class="category-link{% if request.GET.q == topic.name %} active{% endif %}">{{topic.name}}</a>
             </div>
-
-        {% endfor %}
+          {% endfor %}
+          
     </div>
 
     <div>
@@ -42,7 +42,7 @@
         {% endif%}
         <h6>Hosted by {{event.host.username}}</h6>
         <h5> {{event.id}} -- <a href="{% url 'event' event.id %}"> {{event.name}}</a></h5>
-        <small>{{event.topic.name}}</small>
+        <small class="badge">{{event.topic.name}}</small>
         <hr>
 
     </div>
