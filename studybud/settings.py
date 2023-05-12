@@ -37,8 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'base',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+
 ]
 
 MIDDLEWARE = [
@@ -126,3 +133,24 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS =[
+    'django.contrib.auth.backends.ModelBackend', #Needed to login by username in django admin regardless of 'allauth'
+    'allauth.account.auth_backends.AuthenticationBackend',
+    # 'social_core.backends.google.GoogleOAuth2',
+]
+
+SITE_ID = 1
+
+SOCIALACCOUNT_PROVIDERS = {
+'google':{
+    'APP':{
+        'client_id':'698846412579-tq5pei4lqarvjgli2v9cu5kklq63f0f4.apps.googleusercontent.com',
+        'secret':'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',
+        'key':''
+    }
+}
+}
+
+LOGIN_REDIRECT_URL = '/'
+

@@ -1,5 +1,8 @@
 {% extends 'main.html' %}
 
+{% load socialaccount %}
+{% providers_media_js %}
+
 {% block content %}
 
 {% if page == 'login' %}
@@ -20,6 +23,7 @@
         </div>
 
         <button type="submit">Login</button>
+        <a href="{% provider_login_url 'google' %}">Sign in with Google</a>
         <div>
         <p>Yet to register?</p>
         <a href="{% url 'register' %}">Sign up</a>
